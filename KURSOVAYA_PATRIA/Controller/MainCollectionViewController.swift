@@ -34,7 +34,9 @@ class MainCollectionViewController: UICollectionViewController, UICollectionView
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        if movieCategories.isEmpty {
             fetchCategories()
+        }
     }
     
     func fetchCategories() {
@@ -101,6 +103,7 @@ extension MainCollectionViewController: CustomCellDelegate {
     func didSendMovieURL(_ url: String) {
         let movieDetailsVC = MovieDetailsViewController()
         movieDetailsVC.movieURL = url
-        self.present(movieDetailsVC, animated: true, completion: nil)
+        let navigationController = UINavigationController(rootViewController: movieDetailsVC)
+        self.present(navigationController, animated: true, completion: nil)
     }
 }

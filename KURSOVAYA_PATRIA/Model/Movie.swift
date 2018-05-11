@@ -8,14 +8,50 @@
 
 import Foundation
 
-struct Movie {
+class Movie {
     
-    let image: String
-    let title: String
-    let duration: String
-    let genre: String
-    let rating: Double
-    let numberOfVotes: Int = 0
-    let description: String
-    let premiera: Date
+    var coverURLString: String
+    var title: String
+    var movieInfo: String
+    var description: String
+    var premiera: String
+    var producers: String
+    var actors: String
+    var rating: Rating?
+    
+    init(coverURLString: String, title: String, movieInfo: String, description: String, premiera: String, producers: String, actors: String, rating: Rating?) {
+        self.coverURLString = coverURLString
+        self.title = title
+        self.movieInfo = movieInfo
+        self.description = description
+        self.premiera = premiera
+        self.producers = producers
+        self.actors = actors
+        self.rating = rating
+    }
+    
+    init() {
+        self.coverURLString = ""
+        self.title = ""
+        self.movieInfo = ""
+        self.description = ""
+        self.premiera = ""
+        self.producers = ""
+        self.actors = ""
+        self.rating = nil
+    }
+}
+
+class Rating {
+    var numberOfVotes: String
+    var averageRating: String
+    
+    init(numberOfVotes: String, averageRating: String) {
+        self.numberOfVotes = numberOfVotes
+        self.averageRating = averageRating
+    }
+    
+    init?() {
+        return nil
+    }
 }

@@ -10,17 +10,32 @@ import UIKit
 
 class MovieDetailsViewController: UIViewController {
     
-    var movieURL: String! {
-        didSet {
-            print(movieURL)
-        }
-    }
-
+    var movieItem: Movie?
+    var movieURL: String!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.green
-        // Do any additional setup after loading the view.
+        view.backgroundColor = UIColor.red
+        
+        let movieClient = MovieClient()
+        let htmlParser = MoviePageParser(apiClient: movieClient)
+        
+        htmlParser.fetchMovieDetails(movieURLString: movieURL) { (movie) in
+            self.movieItem = movie
+            print(movie.title)
+        }
+        
+        let barButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: #selector(MovieDetailsViewController.dismissPresentViewController))
+        self.navigationItem.leftBarButtonItem = barButtonItem
+        
     }
-
-
+    
+    
+    
+    @objc func dismissPresentViewController() {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    
 }
