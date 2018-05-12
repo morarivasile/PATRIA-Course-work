@@ -10,11 +10,16 @@ import Foundation
 
 class MovieCategory {
     
-    let name: String?
-    let movieItems: [MovieItem]?
+    var name: String?
+    var movieItems: [MovieItem]?
     
     init(name: String, movieItems: [MovieItem]) {
         self.name = name
         self.movieItems = movieItems
+    }
+    
+    init() {
+        self.name = ""
+        self.movieItems = []
     }
 }

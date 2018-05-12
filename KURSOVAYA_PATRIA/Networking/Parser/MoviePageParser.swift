@@ -19,7 +19,11 @@ class MoviePageParser {
     
     func fetchMovieDetails(movieURLString: String, completion: @escaping (_ movie: Movie) -> Void) {
         
+        let dispatchGroup = DispatchGroup()
+        
         var fetchedMovie: Movie = Movie()
+        
+        dispatchGroup.enter()
         
         let moviePath = NSString(string: movieURLString).lastPathComponent
         apiClient.fetchData(from: .movie(movie: moviePath)) { (html, error) in
@@ -79,12 +83,11 @@ class MoviePageParser {
                 }
                 
                 fetchedMovie = Movie(coverURLString: movieCoverURL, title: movieTitle, movieInfo: movieInfo, description: movieDescription, premiera: moviePremiere, producers: movieProducers, actors: movieActors, rating: movieRating)
-                
-                completion(fetchedMovie)
-//                DispatchQueue.main.async {
-//
-//                }
+                dispatchGroup.leave()
             }
+        }
+        dispatchGroup.notify(queue: .main) {
+            completion(fetchedMovie)
         }
     }
     

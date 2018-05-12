@@ -21,8 +21,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let layout = UICollectionViewFlowLayout()
         let mainCollectionViewController = MainCollectionViewController(collectionViewLayout: layout)
-//        window?.rootViewController = UINavigationController(rootViewController: mainCollectionViewController)
-        window?.rootViewController = mainCollectionViewController
+        window?.rootViewController = UINavigationController(rootViewController: mainCollectionViewController)
+//        window?.rootViewController = mainCollectionViewController
         
         return true
     }

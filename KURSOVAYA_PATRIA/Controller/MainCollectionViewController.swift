@@ -20,10 +20,18 @@ class MainCollectionViewController: UICollectionViewController, UICollectionView
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.addSubview(activityIndicator)
+        
+        activityIndicator.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        activityIndicator.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+        activityIndicator.bringSubview(toFront: self.view)
+        activityIndicator.startAnimating()
+        
         self.collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height), collectionViewLayout: StretchyHeaderLayout())
         collectionView!.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
         
         self.collectionView?.backgroundColor = UIColor.white
+        self.navigationController?.isNavigationBarHidden = true
         
         // Register our category cell.
         collectionView?.register(CategoryCell.self, forCellWithReuseIdentifier: MainVCIdentifiers.cellId.rawValue)
@@ -39,19 +47,19 @@ class MainCollectionViewController: UICollectionViewController, UICollectionView
         }
     }
     
+    let activityIndicator: UIActivityIndicatorView = {
+        let ai = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
+        ai.isHidden = true
+        ai.translatesAutoresizingMaskIntoConstraints = false
+        return ai
+    }()
+    
     func fetchCategories() {
         let movieClient = MovieClient()
-        let htmlParser = NowPlayingPageParser(apiClient: movieClient)
+        let moviesParser = MoviesPageParser(apiClient: movieClient)
         
-        htmlParser.fetchNowPlayingMovies { (items) in
-            let nowPalayingCategory = MovieCategory(name: "Now Playing", movieItems: items)
-            self.movieCategories.append(nowPalayingCategory)
-            self.collectionView?.reloadData()
-        }
-        
-        htmlParser.fetchComingSoonMovies { (items) in
-            let comingSoonCategory = MovieCategory(name: "Upcoming", movieItems: items)
-            self.movieCategories.append(comingSoonCategory)
+        moviesParser.fetchNowPlayingMovies { (categories) in
+            self.movieCategories = categories
             self.collectionView?.reloadData()
         }
     }
@@ -101,9 +109,15 @@ extension MainCollectionViewController {
 // MARK: - Custom Cell Delegate Implementation
 extension MainCollectionViewController: CustomCellDelegate {
     func didSendMovieURL(_ url: String) {
-        let movieDetailsVC = MovieDetailsViewController()
-        movieDetailsVC.movieURL = url
-        let navigationController = UINavigationController(rootViewController: movieDetailsVC)
-        self.present(navigationController, animated: true, completion: nil)
+        let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+        let kzdmsVC = storyBoard.instantiateViewController(withIdentifier: "StoryBoardVCViewController") as! StoryBoardVCViewController
+        
+        let movieClient = MovieClient()
+        let movieParser = MoviePageParser(apiClient: movieClient)
+        
+        movieParser.fetchMovieDetails(movieURLString: url) { (movie) in
+            kzdmsVC.movieItem = movie
+            self.navigationController?.pushViewController(kzdmsVC, animated: true)
+        }
     }
 }
