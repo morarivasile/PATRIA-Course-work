@@ -21,12 +21,12 @@ class MoviePageParser {
         
         let dispatchGroup = DispatchGroup()
         
-        var fetchedMovie: Movie = Movie()
+        var fetchedMovie: Movie? = Movie()
         
         dispatchGroup.enter()
         
         let moviePath = NSString(string: movieURLString).lastPathComponent
-//        print(PatriaEndpoints.movie(movie: moviePath).request.url?.absoluteString)
+        
         apiClient.fetchData(from: .movie(movie: moviePath)) { (html, error) in
             guard let htmlString = html else { return }
 
@@ -72,6 +72,12 @@ class MoviePageParser {
                     return
                 }
                 
+                // Retrieving Movie Trailer URL
+                guard let movieIframe = doc.xpath("/html//section[@id='content']//div[@class='iframe']/iframe").first, let movieTrailerURL = movieIframe["src"] else {
+                    print("Movie Trailer URL Element Not found.")
+                    return
+                }
+                
                 // Retrieving Movie Actors
                 guard let movieActors: String = doc.xpath("/html//section[@id='content']//div[@class='story']//div[@class='add-param'][2]").first?.content else {
                     print("Movie Actors Element not found")
@@ -83,12 +89,12 @@ class MoviePageParser {
                     return
                 }
                 
-                fetchedMovie = Movie(coverURLString: movieCoverURL, title: movieTitle, movieInfo: movieInfo, description: movieDescription, premiera: moviePremiere, producers: movieProducers, actors: movieActors, rating: movieRating)
+                fetchedMovie = Movie(coverURLString: movieCoverURL, title: movieTitle, movieInfo: movieInfo, description: movieDescription, premiera: moviePremiere, producers: movieProducers, actors: movieActors, movieTrailerURL: movieTrailerURL, rating: movieRating)
                 dispatchGroup.leave()
             }
         }
         dispatchGroup.notify(queue: .main) {
-            completion(fetchedMovie)
+            completion(fetchedMovie!)
         }
     }
     

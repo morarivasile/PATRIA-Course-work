@@ -17,9 +17,10 @@ class Movie {
     var premiera: String
     var producers: String
     var actors: String
+    var movieTrailerURL: String
     var rating: Rating?
     
-    init(coverURLString: String, title: String, movieInfo: String, description: String, premiera: String, producers: String, actors: String, rating: Rating?) {
+    init(coverURLString: String, title: String, movieInfo: String, description: String, premiera: String, producers: String, actors: String, movieTrailerURL: String, rating: Rating?) {
         self.coverURLString = coverURLString
         self.title = title
         self.movieInfo = movieInfo
@@ -27,18 +28,12 @@ class Movie {
         self.premiera = premiera
         self.producers = producers
         self.actors = actors
+        self.movieTrailerURL = movieTrailerURL
         self.rating = rating
     }
     
-    init() {
-        self.coverURLString = ""
-        self.title = ""
-        self.movieInfo = ""
-        self.description = ""
-        self.premiera = ""
-        self.producers = ""
-        self.actors = ""
-        self.rating = nil
+    init?() {
+        return nil
     }
 }
 

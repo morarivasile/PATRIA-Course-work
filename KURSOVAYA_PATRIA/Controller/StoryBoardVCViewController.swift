@@ -33,6 +33,8 @@ class StoryBoardVCViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print(movieItem.movieTrailerURL)
+        
         setupMovieActorsLabel()
         setupMovieDescriptionLabel()
         setupScreenElements()
