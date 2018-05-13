@@ -16,6 +16,7 @@ enum Result<U> where U: Error {
 protocol Endpoint {
     var base: String { get }
     var path: String { get }
+    var queryItems: [URLQueryItem] { get }
 }
 
 extension Endpoint {
@@ -23,6 +24,7 @@ extension Endpoint {
     var urlComponents: URLComponents {
         var components = URLComponents(string: base)!
         components.path = path
+        components.queryItems = queryItems
         return components
     }
     

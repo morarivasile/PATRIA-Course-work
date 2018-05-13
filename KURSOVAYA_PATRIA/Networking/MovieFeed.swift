@@ -20,11 +20,16 @@ extension PatriaEndpoints: Endpoint {
         return "http://patria.md"
     }
     
+    var queryItems: [URLQueryItem] {
+        let normalModeItem = URLQueryItem(name: "mode", value: "normal")
+        return [normalModeItem]
+    }
+    
     var path: String {
         switch self {
         case .movies: return "/movies/"
         case .news: return "/news/"
-        case.movie(let movie): return "/movies/\(movie)"
+        case.movie(let movie): return "/movies/\(movie)/"
         }
     }
 }

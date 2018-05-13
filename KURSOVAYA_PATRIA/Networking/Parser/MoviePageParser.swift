@@ -26,9 +26,10 @@ class MoviePageParser {
         dispatchGroup.enter()
         
         let moviePath = NSString(string: movieURLString).lastPathComponent
+//        print(PatriaEndpoints.movie(movie: moviePath).request.url?.absoluteString)
         apiClient.fetchData(from: .movie(movie: moviePath)) { (html, error) in
             guard let htmlString = html else { return }
-            
+
             if let doc = try? HTML(html: htmlString, encoding: .utf8) {
                 
                 // Retrieving Movie Cover URL
