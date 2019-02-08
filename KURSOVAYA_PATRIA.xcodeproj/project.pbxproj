@@ -82,13 +82,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		C322212320A34E6900C4B12F /* Layout */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Layout;
-			sourceTree = "<group>";
-		};
 		C3C93FD2209F47F3007B838C /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -152,7 +145,6 @@
 		C3D27EF620A5802300F130C5 /* MainScreen */ = {
 			isa = PBXGroup;
 			children = (
-				C322212320A34E6900C4B12F /* Layout */,
 				C322212420A34E7800C4B12F /* StretchyHeaderLayout.swift */,
 				C3C93FEE20A03BB9007B838C /* CategoryCell.swift */,
 				C3C93FF020A04145007B838C /* MovieCell.swift */,
